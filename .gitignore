@@ -1,0 +1,16 @@
+# IDE / CommandLine Tool
+*.xmake
+*.vscode
+*.idea
+*.cache
+
+# Auto Gen
+*build
+*clangd-trace.json
+*compile_commands.json
+*vs2022
+*vsxmake2022
+*CMakeLists.txt
+
+# Remainings
+!.vscode/launch.json
