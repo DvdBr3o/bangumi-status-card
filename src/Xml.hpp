@@ -5,6 +5,7 @@
 #include <memory>
 #include <string_view>
 #include <string>
+#include <type_traits>
 #include <unordered_map>
 #include <utility>
 #include <variant>
@@ -19,6 +20,19 @@ namespace BangumiStatusCard::Xml {
 	class Node;
 	using GeneralNode  = std::variant<Node, Content>;
 	using GeneralNodes = std::vector<GeneralNode>;
+
+	namespace details::append_child {
+
+		inline static auto _append_child(auto& nodes, auto&& child) -> void {
+			if constexpr (std::same_as<std::decay_t<decltype(child)>, GeneralNodes>
+						  || std::is_constructible_v<GeneralNode, element_type_of<decltype(child)>>)
+				for (auto&& c : child) nodes.emplace_back(std::move(c));
+			else if constexpr (std::same_as<std::remove_cvref_t<decltype(child)>, std::u8string>)
+				nodes.emplace_back(reinterpret_cast<std::string&&>(child));
+			else
+				nodes.emplace_back(std::forward<decltype(child)>(child));
+		}
+	}  // namespace details::append_child
 
 	class Node {
 	public:
@@ -70,15 +84,19 @@ namespace BangumiStatusCard::Xml {
 
 		// clang-format off
         #define BSC_NODE_DEFINE_ATTRIBUTE(name)                                                            \
-            auto& name(std::string_view value) & { return attribute(#name, value); } \
-            auto&& name(std::string_view value) && { return std::move(attribute(#name, value)); }
+		auto& name(std::string_view value) & { return attribute(#name, value); } \
+		auto&& name(std::string_view value) && { return std::move(attribute(#name, value)); }
         #define BSC_NODE_DEFINE_NUM_ATTRIBUTE(name)                                                            \
 		BSC_NODE_DEFINE_ATTRIBUTE(name) \
-            auto& name(int value) & { return attribute(#name, std::to_string(value)); } \
-            auto&& name(int value) && { return std::move(attribute(#name, std::to_string(value))); }
+		auto& name(int value) & { return attribute(#name, std::to_string(value)); } \
+		auto&& name(int value) && { return std::move(attribute(#name, std::to_string(value))); }
 		// clang-format on
 
-		BSC_NODE_DEFINE_ATTRIBUTE(class_)
+		// clang-format off
+		auto&  class_(std::string_view value) & { return attribute("class", value); }
+		auto&& class_(std::string_view value) && { return std::move(attribute("class", value)); }
+
+		// clang-format on
 		BSC_NODE_DEFINE_ATTRIBUTE(id)
 		BSC_NODE_DEFINE_ATTRIBUTE(transform)
 		BSC_NODE_DEFINE_ATTRIBUTE(viewBox)
@@ -157,12 +175,7 @@ namespace BangumiStatusCard::Xml {
 
 	private:
 		auto _append_child(auto&& child) -> void {
-			if constexpr (std::same_as<std::decay_t<decltype(child)>, GeneralNodes>
-						  || std::ranges::view<decltype(child)>
-						  || std::ranges::range<decltype(child)>)
-				for (auto&& c : child) _children.emplace_back(std::move(c));
-			else
-				_children.emplace_back(std::forward<decltype(child)>(child));
+			details::append_child::_append_child(_children, std::forward<decltype(child)>(child));
 		}
 
 	private:
@@ -173,16 +186,18 @@ namespace BangumiStatusCard::Xml {
 
 	template<typename... Ts>
 	auto make_sub(Ts&&... ts) -> GeneralNodes {
+		using details::append_child::_append_child;
+
 		GeneralNodes nodes;
 		nodes.reserve(sizeof...(ts));
-		((nodes.emplace_back(std::forward<Ts>(ts))), ...);
+		((_append_child(nodes, std::forward<Ts>(ts))), ...);
 		return nodes;
 	}
 
 	// clang-format off
     #define BSC_DEFINE_NODE(name)                                                                      \
 	    auto name() { return Node { #name }; } \
-	    auto name(const char* content) { return Node { #name }.sub(content); }
+	    auto name(const char* content) { return Node { #name }.sub(content); }                                                                           \
 	// clang-format on
 
 	BSC_DEFINE_NODE(svg)

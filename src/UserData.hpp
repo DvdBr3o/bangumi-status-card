@@ -21,12 +21,16 @@ namespace BangumiStatusCard {
 	};
 
 	struct Anime {
-		std::string				 name;
-		std::string				 avatar;
-		std::vector<std::string> tags;
+		std::string	  name;
+		std::string	  avatar;
+		std::string	  updated_at;
+		std::uint32_t ep_status;
+		std::uint32_t eps;
 	};
 
 	struct UserData {
-		std::vector<Anime> animes;
+		std::vector<Anime>	  animes;
+		std::string			  title;
+		BangumiCollectionType collection_type;
 	};
 }  // namespace BangumiStatusCard
