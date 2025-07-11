@@ -3,8 +3,6 @@
 
 #include <drogon/drogon.h>
 
-#include <algorithm>
-
 namespace BangumiStatusCard {
 
 	inline static auto to_string(BangumiSubjectType type) -> std::string {
@@ -22,7 +20,7 @@ namespace BangumiStatusCard {
 		METHOD_LIST_END
 
 	public:
-		void details(
+		static void details(
 			const drogon::HttpRequestPtr&						  req,
 			std::function<void(const drogon::HttpResponsePtr&)>&& callback
 		);
@@ -32,11 +30,14 @@ namespace BangumiStatusCard {
 			const std::string&	  username;
 			std::uint32_t		  top;
 			BangumiCollectionType collection_type;
-			bool				  title;
+			std::string			  title;
 			bool				  chinese;
+			std::string_view	  theme_color;
+			int					  width;
+			int					  view_box_width;
 		};
 
-		auto _get_user_data(const GetUserDataParam& params) -> drogon::Task<UserData>;
+		static auto _get_user_data(GetUserDataParam&& params) -> drogon::Task<UserData>;
 	};
 }  // namespace BangumiStatusCard
 
@@ -58,42 +59,35 @@ namespace BangumiStatusCard {
 		}
 
 		// To be elegant requires drogon return optional/expected monad instead of exception!!!
-		const auto get_params = GetUserDataParam {
+		auto get_params = GetUserDataParam {
 			.username = params.at("username"),
 			.top	  = !params.contains("top") ? 0 : std::stoul(params.at("top")),
 			.collection_type =
 				!params.contains("collection_type") ?
 					BangumiCollectionType::Watched :
 					static_cast<BangumiCollectionType>(std::stoul(params.at("collection_type"))),
-			.title	 = !params.contains("title")	 ? true :
-					   params.at("title") == "false" ? false :
-													   true,
+			.title	 = !params.contains("title") ? "" : params.at("title"),
 			.chinese = !params.contains("chinese")	  ? false :
 					   params.at("chinese") == "true" ? true :
 														false,
+			.width	 = !params.contains("width") ? 800 : std::stol(params.at("width")),
+			.view_box_width =
+				!params.contains("view_box_width") ? 800 : std::stol(params.at("view_box_width")),
 		};
 
-		const auto userdata = drogon::sync_wait(_get_user_data(get_params));
+		const auto userdata = drogon::sync_wait(_get_user_data(std::move(get_params)));
 
-		// std::ranges::for_each(userdata.animes, [](auto&& a) { std::cout << a.name << '\n'; });
+		const auto cardd =
+			card(userdata, get_params.width, get_params.view_box_width).to_string_compact();
 
-		resp->setBody(
-			card(
-				{ .animes = { Anime {
-					  .name	  = "败犬",
-					  .avatar = "https://lain.bgm.tv/r/400/pic/cover/l/e4/dc/464376_NsZRw.jpg",
-					  .tags	  = { "a", "b", "c" },
-				  } } },
-				800,
-				600
-			)
-				.to_string_loose()
-		);
+		std::cout << cardd << '\n';
+		resp->setBody(cardd);
+		resp->setContentTypeCode(drogon::ContentType::CT_IMAGE_SVG_XML);
 
 		callback(resp);
 	}
 
-	auto Api::_get_user_data(const GetUserDataParam& params) -> drogon::Task<UserData> {
+	auto Api::_get_user_data(GetUserDataParam&& params) -> drogon::Task<UserData> {
 		using drogon::HttpClient;
 		using drogon::HttpRequest;
 
@@ -112,14 +106,20 @@ namespace BangumiStatusCard {
 		const auto data = (*resp->getJsonObject())["data"];
 
 		UserData   userdata;
+		userdata.collection_type = params.collection_type;
+		userdata.title			 = std::move(params.title);
+
+		SetConsoleOutputCP(CP_UTF8);  // TODO: Delete this.
+
 		userdata.animes.reserve(data.size());
-
-		SetConsoleOutputCP(CP_UTF8);
-
 		for (const auto& anime : data)
 			userdata.animes.emplace_back(Anime {
-				.name = params.chinese ? anime["subject"]["name_cn"].asString() :
-										 anime["subject"]["name"].asString(),
+				.name		= params.chinese ? anime["subject"]["name_cn"].asString() :
+											   anime["subject"]["name"].asString(),	 //
+				.avatar		= anime["subject"]["images"]["common"].asString(),		 //
+				.updated_at = anime["updated_at"].asString(),						 //
+				.ep_status	= anime["ep_status"].as<std::uint32_t>(),				 //
+				.eps		= anime["subject"]["eps"].as<std::uint32_t>(),			 //
 			});
 
 		co_return userdata;
