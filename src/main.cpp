@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
 	argparse::ArgumentParser arg { "bangumi-status-card" };
 	arg												//
 		.add_argument("--port")						//
-		.default_value(12301)						//
+		.default_value(8080)						//
 		.help("set the port where this app runs.")	//
 		;
 
@@ -26,8 +26,8 @@ int main(int argc, char** argv) {
 
 	std::cout << std::format("Starting on localhost:{}\n", port);
 
-	drogon::app()						 //
-		.addListener("127.0.0.1", port)	 //
-		.run()							 //
+	drogon::app()					   //
+		.addListener("0.0.0.0", port)  //
+		.run()						   //
 		;
 }

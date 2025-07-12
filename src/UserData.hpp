@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <cstdint>
 
 namespace BangumiStatusCard {
 	enum class BangumiSubjectType : std::uint32_t {

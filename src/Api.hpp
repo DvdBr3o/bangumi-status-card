@@ -49,7 +49,7 @@ namespace BangumiStatusCard {
 		const auto params = req->getParameters();
 		auto	   resp	  = drogon::HttpResponse::newHttpResponse();
 
-		for (const auto& p : params) std::cout << std::format("{}: {}\n", p.first, p.second);
+		// for (const auto& p : params) std::cout << std::format("{}: {}\n", p.first, p.second);
 
 		const auto username = params.at("username");
 		if (username.empty()) {
@@ -80,7 +80,7 @@ namespace BangumiStatusCard {
 		const auto cardd =
 			card(userdata, get_params.width, get_params.view_box_width).to_string_compact();
 
-		std::cout << cardd << '\n';
+		// std::cout << cardd << '\n';
 		resp->setBody(cardd);
 		resp->setContentTypeCode(drogon::ContentType::CT_IMAGE_SVG_XML);
 
@@ -108,8 +108,6 @@ namespace BangumiStatusCard {
 		UserData   userdata;
 		userdata.collection_type = params.collection_type;
 		userdata.title			 = std::move(params.title);
-
-		SetConsoleOutputCP(CP_UTF8);  // TODO: Delete this.
 
 		userdata.animes.reserve(data.size());
 		for (const auto& anime : data)

@@ -6,9 +6,7 @@
 #include "Xml.hpp"
 
 #include <matchit.h>
-#include <cppcodec/base64_url.hpp>
 #include <drogon/drogon.h>
-#include <utf8cpp/utf8.h>
 
 #include <ranges>
 #include <string>
@@ -111,10 +109,10 @@ namespace BangumiStatusCard {
 	inline static auto avatar(std::string_view url, const Point& base = { 0, 0 }) {
 		using namespace Xml;
 
-		static Counter				counter {};
-		static cppcodec::base64_url b {};
+		static Counter counter {};
+		// static cppcodec::base64_url b {};
 
-		const auto					mask_name = std::format("bscMask{}", counter.count());
+		const auto mask_name = std::format("bscMask{}", counter.count());
 
 		return make_sub(								   //
 			mask()										   //
