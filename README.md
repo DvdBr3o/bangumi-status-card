@@ -6,7 +6,9 @@
 
 Display bangumi status in a form of a svg card, which can be attached to any kind of your personal introduction, such as blog, github profile and so on.
 
-Unfortunately, since github svg card disallow remote image loading, there is currently no way to involve covers of anime in the github related cards. QAQ. But for normal blogs the covers can be done right.
+> [!WARNING]
+> Unfortunately, since svg disallow remote image loading, there is currently no way to involve covers of anime in the github related cards. QAQ.
+> Encoding the covers into base64 and embeding it into svg is a way, but I'm not with it because it's kind of complicated and performance risky.
 
 ## How to use
 
@@ -24,15 +26,17 @@ For html:
 
 ### Parameters
 
-| Parameter       | Type    | Default | Description                                                                                  |
-| --------------- | ------- | ------- | -------------------------------------------------------------------------------------------- |
-| username        | string  |         | The name of user.                                                                            |
-| top             | number? | 0       | The number of anime listed.<br />0 for infinity                                              |
-| collection_type | enum?   | 2       | 1: Want to watch<br /> 2: Watched <br /> 3: On watching <br /> 4: Delayed <br /> 5: Deserted |
-| title           | bool?   | true    | Requires title above.                                                                        |
-| chinese         | bool?   | false   | Whether to use Chinese for bangumi name.                                                     |
+| Parameter       | Type    | Default | Description                                                                                     |
+| --------------- | ------- | ------- | ----------------------------------------------------------------------------------------------- |
+| username        | string  |         | The name of user.                                                                               |
+| top             | number? | 0       | The number of anime listed. (not implemented)<br />0 for infinity                               |
+| collection_type | enum?   | 2       | 1: Want to watch<br /> 2: Watched <br /> 3: On watching <br /> 4: Delayed <br /> 5: Deserted    |
+| title           | string? | ""      | The title above.                                                                                |
+| chinese         | bool?   | false   | Whether to use Chinese for bangumi name.                                                        |
+| width           | number? | 800     | The width of card.                                                                              |
+| view_box_width  | number? | 800     | The width of viewBox. The larger it is, the more displayed are the excessively long anime name. |
 
-These parameters are for interface `details`. Later we will support another type `overview`. And a specific github parameter to disable avatar which requires remote image loading.
+These parameters are for interface `details`. Later we will support another type `overview`.
 
 ## Deploy
 
