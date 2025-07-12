@@ -12,6 +12,7 @@ int main(int argc, char** argv) {
 		.add_argument("--port")						//
 		.default_value(8080)						//
 		.help("set the port where this app runs.")	//
+		.scan<'i', int>()							//
 		;
 
 	try {
