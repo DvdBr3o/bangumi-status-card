@@ -246,14 +246,14 @@ namespace BangumiStatusCard {
 						}));
 	}
 
-	inline static auto padding_box(const Point& size, const Point& base = { 0, 0 }) {
+	inline static auto padding_box() {
 		using namespace Xml;
 		return					 //
 			rect()				 //
-				.x(base.x)		 //
-				.y(base.y)		 //
-				.width(size.x)	 //
-				.height(size.y)	 //
+				.x(0)			 //
+				.y(0)			 //
+				.width("100%")	 //
+				.height("100%")	 //
 				.fill("white")	 //
 				.rx(10)			 //
 				.ry(10)			 //
@@ -274,27 +274,27 @@ namespace BangumiStatusCard {
 					.viewBox(std::format("0 0 {} {}", view_box_width, 80 + view_box_height))  //
 					.width(width)
 					.height((80 + view_box_height) * width / view_box_width)
-					.attribute("role", "img")												 //
-					.sub(																	 //
-						card_style(),														 //
-						padding_box({ width, static_cast<int32_t>(80 + view_box_height) }),	 //
-						text()																 //
-							.class_("bsc-title")											 //
-							.x(32)															 //
-							.y(73)															 //
-							.sub(data.title),												 //
-						svg()																 //
-							.x("4%")														 //
-							.y(94)															 //
-							.width("92%")													 //
-							.height(3)														 //
-							.sub(															 //
-								rect()														 //
-									.fill("gray")											 //
-									.width("100%")											 //
-									.height("100%")											 //
-							)																 //
-						,																	 //
+					.attribute("role", "img")		 //
+					.sub(							 //
+						card_style(),				 //
+						padding_box(),				 //
+						text()						 //
+							.class_("bsc-title")	 //
+							.x(32)					 //
+							.y(73)					 //
+							.sub(data.title),		 //
+						svg()						 //
+							.x("4%")				 //
+							.y(94)					 //
+							.width("92%")			 //
+							.height(3)				 //
+							.sub(					 //
+								rect()				 //
+									.fill("gray")	 //
+									.width("100%")	 //
+									.height("100%")	 //
+							)						 //
+						,							 //
 						data.collection_type == BangumiCollectionType::Watched ?
 							watched_anime_list(data.animes, { 0, 100 }) :
 						data.collection_type == BangumiCollectionType::OnWathing ?
@@ -311,7 +311,7 @@ namespace BangumiStatusCard {
 					   .attribute("role", "img")											//
 					   .sub(																//
 						   card_style(),													//
-						   padding_box({ width, static_cast<int32_t>(view_box_height) }),	//
+						   padding_box(),													//
 						   data.collection_type == BangumiCollectionType::Watched ?			//
 							   watched_anime_list(data.animes, { 0, 20 }) :					//
 							   data.collection_type == BangumiCollectionType::OnWathing ?	//
