@@ -6,11 +6,19 @@
 
 Display bangumi status in a form of a svg card, which can be attached to any kind of your personal introduction, such as blog, github profile and so on.
 
-> [!WARNING]
+> [!NOTE]
 > Unfortunately, since svg disallow remote image loading, there is currently no way to involve covers of anime in the github related cards. QAQ.
 > Encoding the covers into base64 and embeding it into svg is a way, but I'm not with it because it's kind of complicated and performance risky.
 
 ## How to use
+
+> [!WARNING]
+> Well... currently `bangumi-status-card.dvdbr3o.top` is not registered since my server is not over ICP yet.
+> Now You can either:
+>
+> - (Recommended) Deploy card service of yourself. See [Deploy](#Deploy)
+>
+> - Use `http://113.45.235.142:12301` (May be invalid at the end of this year)
 
 For markdown:
 
@@ -23,6 +31,20 @@ For html:
 ```html
 <img src="bangumi-status-card.dvdbr3o.top/details?username=dvdbr3o"></img>
 ```
+
+### Examples
+
+```markdown
+![](http://113.45.235.142:12301/details?username=dvdbr3o&title=%E2%9C%85I%27ve%20watched&width=400)
+```
+
+![](http://113.45.235.142:12301/details?username=dvdbr3o&title=%E2%9C%85I%27ve%20watched&width=400)
+
+```markdown
+![](http://113.45.235.142:12301/details?username=dvdbr3o&collection_type=3&title=%F0%9F%91%80I%27m%20watching&width=400)
+```
+
+![](http://113.45.235.142:12301/details?username=dvdbr3o&collection_type=3&title=%F0%9F%91%80I%27m%20watching&width=400)
 
 ### Parameters
 
