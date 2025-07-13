@@ -12,14 +12,6 @@ Display bangumi status in a form of a svg card, which can be attached to any kin
 
 ## How to use
 
-> [!WARNING]
-> Well... currently `bangumi-status-card.dvdbr3o.top` is not registered since my server is not over ICP yet.
-> Now You can either:
->
-> - (Recommended) Deploy card service of yourself. See [Deploy](#Deploy)
->
-> - Use `http://113.45.235.142:12301` (May be invalid at the end of this year)
-
 For markdown:
 
 ```markdown
