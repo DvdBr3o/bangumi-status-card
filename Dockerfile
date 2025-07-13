@@ -1,6 +1,6 @@
 FROM ubuntu:24.04 AS builder
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Install xmake
 
@@ -15,15 +15,15 @@ WORKDIR /app
 
 COPY . /app
 
-RUN xmake f -c -m release -p linux -a x64 -y && \
-    xmake b bangumi-status-card
+RUN xmake f -c -m release -p linux -a x64 -y -vD && \
+    xmake b -vD bangumi-status-card
 
 FROM debian:trixie-slim
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get -y update && \
-    apt-get install -y ca-certificates curl
+    apt-get install -y ca-certificates
 
 COPY --from=builder /app/build/linux/x64/release/bangumi-status-card .
 

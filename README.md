@@ -40,6 +40,15 @@ These parameters are for interface `details`. Later we will support another type
 
 ## Deploy
 
+### Docker
+
+Bangumi status card can be self-hosted by docker.
+
+```bash
+docker pull dvdbrooo/bangumi-status-card
+docker run -d -p 8080:8080 dvdbrooo/bangumi-status-card
+```
+
 ## Related Projects
 
 - [anuraghazra/github-readme-stats](https://github.com/anuraghazra/github-readme-stats): Status card about github user info.

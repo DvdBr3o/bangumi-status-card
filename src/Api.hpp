@@ -92,7 +92,7 @@ namespace BangumiStatusCard {
 		using drogon::HttpRequest;
 
 		// https://api.bgm.tv/v0/users/dvdbr3o/collections?subject_type=2&type=3&limit=30&offset=0
-		auto bangumi = HttpClient::newHttpClient("https://api.bgm.tv");
+		auto bangumi = HttpClient::newHttpClient("https://api.bgm.tv", nullptr, false, false);
 		auto req	 = HttpRequest::newHttpRequest();
 		req->setMethod(drogon::HttpMethod::Get);
 		req->setParameter("username", params.username);
