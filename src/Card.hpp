@@ -226,7 +226,7 @@ namespace BangumiStatusCard {
 							const auto cur = counter.count();
 							return watched_anime_block(
 								a,
-								{ base.x + 5, static_cast<int32_t>(base.y + 5 + cur * 110) }
+								{ base.x + 25, static_cast<int32_t>(base.y + 5 + cur * 110) }
 							);
 						}));
 	}
@@ -241,66 +241,82 @@ namespace BangumiStatusCard {
 							const auto cur = counter.count();
 							return onwatching_anime_block(
 								a,
-								{ base.x + 5, static_cast<int32_t>(base.y + 5 + cur * 110) }
+								{ base.x + 25, static_cast<int32_t>(base.y + 5 + cur * 110) }
 							);
 						}));
+	}
+
+	inline static auto padding_box(const Point& size, const Point& base = { 0, 0 }) {
+		using namespace Xml;
+		return					 //
+			rect()				 //
+				.x(base.x)		 //
+				.y(base.y)		 //
+				.width(size.x)	 //
+				.height(size.y)	 //
+				.fill("white")	 //
+				.rx(10)			 //
+				.ry(10)			 //
+			;
 	}
 
 	inline static auto card(const UserData& data, int width = 800, int view_box_width = 800) {
 		using namespace Xml;
 		using namespace matchit;
+
+		const auto view_box_height = 45 + data.animes.size() * 110;
+
 		if (!data.title.empty())
-			return													   //
-				move_it |											   //
-				svg()												   //
-					.attribute("xmlns", "http://www.w3.org/2000/svg")  //
-					.viewBox(std::format("0 0 {} {}", view_box_width, 85 + data.animes.size() * 110)
-					)												   //
+			return																			  //
+				move_it |																	  //
+				svg()																		  //
+					.attribute("xmlns", "http://www.w3.org/2000/svg")						  //
+					.viewBox(std::format("0 0 {} {}", view_box_width, 80 + view_box_height))  //
 					.width(width)
-					.height((85 + data.animes.size() * 110) * width / view_box_width)
-					.attribute("role", "img")		 //
-					.sub(							 //
-						card_style(),				 //
-						text()						 //
-							.class_("bsc-title")	 //
-							.x(12)					 //
-							.y(53)					 //
-							.sub(data.title),		 //
-						svg()						 //
-							.x("1%")				 //
-							.y(74)					 //
-							.width("98%")			 //
-							.height(3)				 //
-							.sub(					 //
-								rect()				 //
-									.fill("gray")	 //
-									.width("100%")	 //
-									.height("100%")	 //
-							)						 //
-						,							 //
+					.height((80 + view_box_height) * width / view_box_width)
+					.attribute("role", "img")												 //
+					.sub(																	 //
+						card_style(),														 //
+						padding_box({ width, static_cast<int32_t>(80 + view_box_height) }),	 //
+						text()																 //
+							.class_("bsc-title")											 //
+							.x(32)															 //
+							.y(73)															 //
+							.sub(data.title),												 //
+						svg()																 //
+							.x("4%")														 //
+							.y(94)															 //
+							.width("92%")													 //
+							.height(3)														 //
+							.sub(															 //
+								rect()														 //
+									.fill("gray")											 //
+									.width("100%")											 //
+									.height("100%")											 //
+							)																 //
+						,																	 //
 						data.collection_type == BangumiCollectionType::Watched ?
-							watched_anime_list(data.animes, { 0, 80 }) :
+							watched_anime_list(data.animes, { 0, 100 }) :
 						data.collection_type == BangumiCollectionType::OnWathing ?
-							onwatching_anime_list(data.animes, { 0, 80 }) :
+							onwatching_anime_list(data.animes, { 0, 100 }) :
 							GeneralNodes {}
 					);
 		else
-			return move_it |											  //
-				   svg()												  //
-					   .attribute("xmlns", "http://www.w3.org/2000/svg")  //
-					   .viewBox(
-						   std::format("0 0 {} {}", view_box_width, 5 + data.animes.size() * 110)
-					   )  //
-					   .width(width)
-					   .height((5 + data.animes.size() * 110) * width / view_box_width)
-					   .attribute("role", "img")  //
-					   .sub(					  //
-						   card_style(),
-						   data.collection_type == BangumiCollectionType::Watched ?
-							   watched_anime_list(data.animes) :
-						   data.collection_type == BangumiCollectionType::OnWathing ?
-							   onwatching_anime_list(data.animes) :
-							   GeneralNodes {}
+			return move_it |																//
+				   svg()																	//
+					   .attribute("xmlns", "http://www.w3.org/2000/svg")					//
+					   .viewBox(std::format("0 0 {} {}", view_box_width, view_box_height))	//
+					   .width(width)														//
+					   .height(view_box_height * width / view_box_width)					//
+					   .attribute("role", "img")											//
+					   .sub(																//
+						   card_style(),													//
+						   padding_box({ width, static_cast<int32_t>(view_box_height) }),	//
+						   data.collection_type == BangumiCollectionType::Watched ?			//
+							   watched_anime_list(data.animes, { 0, 20 }) :					//
+							   data.collection_type == BangumiCollectionType::OnWathing ?	//
+								   onwatching_anime_list(data.animes, { 0, 20 }) :			//
+								   GeneralNodes {}											//
 					   );
 	}
 
