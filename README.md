@@ -27,16 +27,16 @@ For html:
 ### Examples
 
 ```markdown
-![](http://113.45.235.142:12301/details?username=dvdbr3o&title=%E2%9C%85I%27ve%20watched&width=400)
+![](http://bangumi-status-card.dvdbr3o.top/details?username=dvdbr3o&title=%E2%9C%85I%27ve%20watched&width=400)
 ```
 
-![](http://113.45.235.142:12301/details?username=dvdbr3o&title=%E2%9C%85I%27ve%20watched&width=400)
+![](http://bangumi-status-card.dvdbr3o.top/details?username=dvdbr3o&title=%E2%9C%85I%27ve%20watched&width=400)
 
 ```markdown
-![](http://113.45.235.142:12301/details?username=dvdbr3o&collection_type=3&title=%F0%9F%91%80I%27m%20watching&width=400)
+![](http://bangumi-status-card.dvdbr3o.top/details?username=dvdbr3o&collection_type=3&title=%F0%9F%91%80I%27m%20watching&width=400)
 ```
 
-![](http://113.45.235.142:12301/details?username=dvdbr3o&collection_type=3&title=%F0%9F%91%80I%27m%20watching&width=400)
+![](http://bangumi-status-card.dvdbr3o.top/details?username=dvdbr3o&collection_type=3&title=%F0%9F%91%80I%27m%20watching&width=400)
 
 ### Parameters
 
