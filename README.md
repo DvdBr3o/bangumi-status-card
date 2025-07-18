@@ -1,5 +1,7 @@
 <h1 align="center">bangumi-status-card</h1>
 
+<a href="https://wakatime.com/badge/user/e4fc89b9-21c5-4e72-b622-92abc1d68721/project/f09309c6-ae78-44fb-81a8-911d144e87e0"><img src="https://wakatime.com/badge/user/e4fc89b9-21c5-4e72-b622-92abc1d68721/project/f09309c6-ae78-44fb-81a8-911d144e87e0.svg" alt="wakatime" /></a>
+
 ---
 
 ## Feature
