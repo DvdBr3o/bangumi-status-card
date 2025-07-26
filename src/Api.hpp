@@ -2,6 +2,7 @@
 #include "Card.hpp"
 
 #include <drogon/drogon.h>
+#include <chrono>
 
 namespace BangumiStatusCard {
 
@@ -50,11 +51,17 @@ namespace BangumiStatusCard {
 		auto	   resp	  = drogon::HttpResponse::newHttpResponse();
 
 		// Disable github cache
-		// Cache-Control: private, max-age=0, no-store, no-cache, must-revalidate, post-check=0,
-		// pre-check=0
+		// https://github.com/github/markup/issues/224#issuecomment-33454537
+		resp->addHeader("Cache-Control", "no-cache");
+		resp->addHeader("Expires", "Thu, 01 Jan 1970 00:00:01 GMT");
 		resp->addHeader(
-			"Cache-Control",
-			"max-age=0, no-store, no-cache, must-revalidate, post-check=0, pre-check=0"
+			"ETag",
+			std::format(
+				"W/\"{}\"",
+				std::to_string(std::hash<long long>()(
+					std::chrono::high_resolution_clock::now().time_since_epoch().count()
+				))
+			)
 		);
 
 		const auto username = params.at("username");
