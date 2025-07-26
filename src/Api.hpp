@@ -49,7 +49,13 @@ namespace BangumiStatusCard {
 		const auto params = req->getParameters();
 		auto	   resp	  = drogon::HttpResponse::newHttpResponse();
 
-		// for (const auto& p : params) std::cout << std::format("{}: {}\n", p.first, p.second);
+		// Disable github cache
+		// Cache-Control: private, max-age=0, no-store, no-cache, must-revalidate, post-check=0,
+		// pre-check=0
+		resp->addHeader(
+			"Cache-Control",
+			"max-age=0, no-store, no-cache, must-revalidate, post-check=0, pre-check=0"
+		);
 
 		const auto username = params.at("username");
 		if (username.empty()) {
@@ -80,7 +86,6 @@ namespace BangumiStatusCard {
 		const auto cardd =
 			card(userdata, get_params.width, get_params.view_box_width).to_string_compact();
 
-		// std::cout << cardd << '\n';
 		resp->setBody(cardd);
 		resp->setContentTypeCode(drogon::ContentType::CT_IMAGE_SVG_XML);
 
