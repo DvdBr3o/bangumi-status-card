@@ -52,7 +52,8 @@ namespace BangumiStatusCard {
 
 		// Disable github cache
 		// https://github.com/github/markup/issues/224#issuecomment-33454537
-		resp->addHeader("Cache-Control", "no-cache");
+		// resp->addHeader("Cache-Control", "no-cache");
+		resp->addHeader("Cache-Control", "max-age=43200");
 		resp->addHeader("Expires", "Thu, 01 Jan 1970 00:00:01 GMT");
 		resp->addHeader(
 			"ETag",
