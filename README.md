@@ -13,7 +13,7 @@ Display bangumi status in a form of a svg card, which can be attached to any kin
 > Encoding the covers into base64 and embeding it into svg is a way, but I'm not with it because it's kind of complicated and performance risky.
 
 > [!NOTE]
-> github has an aggressive image caching strategy for non-https cdn servers hence status card images may be unable to be updated in time. As for `bangumi-status-card.dvdbr3o.top` it has not had have ssl certificate so far, with which the cache problem can be solved.
+> github has an aggressive image caching strategy for non-https cdn servers hence status card images may be unable to be updated in time. As for `bangumi-status-card.dvdbr3o.top` it has not had ssl certificate so far, with which the cache problem can be solved.
 
 ## How to use
 
